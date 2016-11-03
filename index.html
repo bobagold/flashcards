@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <a href="#" onclick="generate(5)">Ещё</a><br/>
+    <a href="#" onclick="return generate(5)">Ещё</a><br/>
     <script>
         var
             words_en = "Albatross, Alligator, Angelfish, Ant, Anteater, Antelope, Armadillo, Avocet, Axolotl, Baboon, Badger, Barracuda, Bat, Beagle, Bear, Beaver, Beetle, Bird, Birman, Bison, Bloodhound, Bobcat, Bongo, Bonobo, Budgerigar, Buffalo, Bulldog, Bullfrog, Butterfly, Caiman, Camel, Capybara, Caracal, Cassowary, Cat, Caterpillar, Catfish, Centipede, Chameleon, Cheetah, Chicken, Chihuahua, Chimpanzee, Chinchilla, Chipmunk, Coati, Cockroach, Collie, Cougar, Cow, Coyote, Crab, Crane, Crocodile, Cuscus, Cuttlefish, Dachshund, Dalmatian, Deer, Dingo, Dodo, Dog, Dolphin, Donkey, Dormouse, Dragonfly, Duck, Eagle, Earwig, Echidna, Elephant, Emu, Falcon, Ferret, Fish, Flamingo, Flounder, Fox, Frog, Gar, Gecko, Gerbil, Gibbon, Giraffe, Goat, Goose, Gopher, Gorilla, Grasshopper, Greyhound, Grouse, Guppy, Hamster, Hare, Hedgehog, Heron, Hippopotamus, Horse, Human, Hummingbird, Hyena, Ibis, Iguana, Impala, Indri, Insect, Jackal, Jaguar, Jellyfish, Kakapo, Kangaroo, Kingfisher, Kiwi, Koala, Kudu, Labradoodle, Lemming, Lemur, Leopard, Liger, Lion, Lizard, Llama, Lobster, Lynx, Macaw, Magpie, Manatee, Mandrill, Mastiff, Mayfly, Meerkat, Millipede, Mole, Mongoose, Monkey, Moorhen, Moose, Moth, Mouse, Mule, Newfoundland, Newt, Nightingale, Numbat, Ocelot, Octopus, Okapi, Olm, Opossum, Orangutan, Ostrich, Otter, Oyster, Panther, Parrot, Pekingese, Pelican, Penguin, Pheasant, Pig, Pika, Piranha, Platypus, Poodle, Porcupine, Possum, Prawn, Puffin, Pug, Puma, Quail, Quetzal, Quokka, Rabbit, Raccoon, Rat, Rattlesnake, Reindeer, Rhinoceros, Rottweiler, Salamander, Scorpion, Seahorse, Seal, Serval, Sheep, Shrimp, Skunk, Sloth, Snail, Snake, Sparrow, Sponge, Squid, Squirrel, Starfish, Stingray, Stoat, Swan, Tang, Tapir, Termite, Tiger, Tortoise, Toucan, Turkey, Vulture, Wallaby, Walrus, Wasp, Weasel, Wildebeest, Wolverine, Wombat, Woodlouse, Woodpecker, Yak, Zebra".split(', '),
@@ -28,7 +28,7 @@
         function generate(number_of_words) {
             var
                 selected,
-                imgClick = function (word) {
+                imgClick = function () {
                     if (!selected) {
                         selected = this;
                         this.className = 'selected';
@@ -40,6 +40,7 @@
                         selected.className = '';
                         selected = null;
                     }
+                    return false;
                 },
                 imgLoaded = function (img) {
                     return function (data) {
@@ -107,6 +108,7 @@
             showImages(slugs, names);
             shuffle(names);
             showNames(names);
+            return false;
         }
         generate(5);
     </script>
