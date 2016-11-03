@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flash cards</title>
+    <style>
+        a { display: block; }
+        .selected { border: 2px solid green; }
+        img { max-width: 200px; }
+    </style>
+</head>
+<body>
+    <a href="#" onclick="generate(5)">Ещё</a><br/>
+    <script>
+        var
+            words_en = "Albatross, Alligator, Angelfish, Ant, Anteater, Antelope, Armadillo, Avocet, Axolotl, Baboon, Badger, Barracuda, Bat, Beagle, Bear, Beaver, Beetle, Bird, Birman, Bison, Bloodhound, Bobcat, Bongo, Bonobo, Budgerigar, Buffalo, Bulldog, Bullfrog, Butterfly, Caiman, Camel, Capybara, Caracal, Cassowary, Cat, Caterpillar, Catfish, Centipede, Chameleon, Cheetah, Chicken, Chihuahua, Chimpanzee, Chinchilla, Chipmunk, Coati, Cockroach, Collie, Cougar, Cow, Coyote, Crab, Crane, Crocodile, Cuscus, Cuttlefish, Dachshund, Dalmatian, Deer, Dingo, Dodo, Dog, Dolphin, Donkey, Dormouse, Dragonfly, Duck, Eagle, Earwig, Echidna, Elephant, Emu, Falcon, Ferret, Fish, Flamingo, Flounder, Fox, Frog, Gar, Gecko, Gerbil, Gibbon, Giraffe, Goat, Goose, Gopher, Gorilla, Grasshopper, Greyhound, Grouse, Guppy, Hamster, Hare, Hedgehog, Heron, Hippopotamus, Horse, Human, Hummingbird, Hyena, Ibis, Iguana, Impala, Indri, Insect, Jackal, Jaguar, Jellyfish, Kakapo, Kangaroo, Kingfisher, Kiwi, Koala, Kudu, Labradoodle, Lemming, Lemur, Leopard, Liger, Lion, Lizard, Llama, Lobster, Lynx, Macaw, Magpie, Manatee, Mandrill, Mastiff, Mayfly, Meerkat, Millipede, Mole, Mongoose, Monkey, Moorhen, Moose, Moth, Mouse, Mule, Newfoundland, Newt, Nightingale, Numbat, Ocelot, Octopus, Okapi, Olm, Opossum, Orangutan, Ostrich, Otter, Oyster, Panther, Parrot, Pekingese, Pelican, Penguin, Pheasant, Pig, Pika, Piranha, Platypus, Poodle, Porcupine, Possum, Prawn, Puffin, Pug, Puma, Quail, Quetzal, Quokka, Rabbit, Raccoon, Rat, Rattlesnake, Reindeer, Rhinoceros, Rottweiler, Salamander, Scorpion, Seahorse, Seal, Serval, Sheep, Shrimp, Skunk, Sloth, Snail, Snake, Sparrow, Sponge, Squid, Squirrel, Starfish, Stingray, Stoat, Swan, Tang, Tapir, Termite, Tiger, Tortoise, Toucan, Turkey, Vulture, Wallaby, Walrus, Wasp, Weasel, Wildebeest, Wolverine, Wombat, Woodlouse, Woodpecker, Yak, Zebra".split(', '),
+            words_ru = "Альбатрос, Аллигатор, Рыба-Ангел, Муравей, Муравьед, Антилопа, Броненосец, Шилоклювка, Аксолотля, Павиан, Барсук, Барракуда, Летучая Мышь, Бигль, Медведь, Бобр, Жук, Птица, Бирман, Зубр, Собака, Кошка, Бонго, Бонобо, Волнистый Попугайчик, Буффало, Бульдог, Лягушка-Бык, Бабочка, Кайман, Верблюд, Кабан, Каракал, Казуар, Кошка, Гусеница, Сом, Сороконожка, Хамелеон, Гепард, Курица, Чихуахуа, Шимпанзе, Шиншилла, Бурундук, Носухи, Тараканы, Колли, Пумы, Коровы, Койоты, Крабы, Журавль, Крокодил, Кускус, Каракатицы, Такса, Далматин, Олени, Собаки Динго, Додо, Собака, Дельфин, Осел, Мышка, Стрекоза, Утка, Орел, Уховертки, Ехидна, Слон, Эму, Сокол, Хорек, Рыбки, Фламинго, Камбала, Лиса, Лягушка, Гар, Геккон, Песчанка, Гиббон, Жираф, Коза, Гусь, Суслик, Горилла, Кузнечик, Грейхаунд, Глухарь, Гуппи, Хомяк, Заяц-Русак, Еж, Цапля, Бегемот, Лошадь, Человека, Колибри, Гиена, Ибис, Игуана, Импала, Индри, Насекомые, Шакал, Ягуар, Медузы, Какапо, Кенгуру, Зимородок, КИВИ, Коала, Антилопа Куду, Лабрадудель, Лемминг, Лемур, Леопард, Лигр, Лев, Ящерицы, Ламы, Омары, Рысь, попугай, сорока, Ламантин, Мандрил, мастиф, Поденок, Сурикат, Многоножки, моль, Мангуст, обезьяна, Камышница, Лось, моль, мышь, Бык, Ньюфаундленд, Ньют, Соловей, сумчатый муравьед, Оцелот, Спрут, Окапи, Олм, Опоссум, Орангутан, страус, выдра, устрицы, Пантера, попугай, пекинес, Пеликан, Пингвин, фазан, поросенок, Пищуха, Пиранья, Утконос, пудель, Дикобраз, Опоссум, Креветки, Тупик, Мопс, Пума, Перепела, Кетцаль, Квокка, Кролик, Енот, Крыса, Змея, Олень, Носорог, Ротвейлер, Саламандра, Скорпион, Морской Конек, Тюлень, Сервал, Овца, Креветки, Скунс, Медведь, Улитка, Змея, Воробей, Губка, Кальмар, Белка, Морская Звезда, Скат, Горностай, Лебедь, Тан, Тапир, Термит, Тигр, Черепаха, Тукан, Индейка, Гриф, Кенгуру, Морж, Оса, Ласка, Антилопа, Росомаха, Вомбат, Мокрица, Дятел, Як, Зебра".split(', ');
+        function shuffle(a) {
+            var j, x, i;
+            for (i = a.length; i; i--) {
+                j = Math.floor(Math.random() * i);
+                x = a[i - 1];
+                a[i - 1] = a[j];
+                a[j] = x;
+            }
+        }
+        function generate(number_of_words) {
+            var
+                selected,
+                imgClick = function (word) {
+                    if (!selected) {
+                        selected = this;
+                        this.className = 'selected';
+                    } else if (selected != this && selected.dataset['word'] == this.dataset['word']) {
+                        document.body.removeChild(selected);
+                        document.body.removeChild(this);
+                        selected = null;
+                    } else {
+                        selected.className = '';
+                        selected = null;
+                    }
+                },
+                imgLoaded = function (img) {
+                    return function (data) {
+                        var img = this;
+                        pages = data.query.pages;
+                        for (var i in pages) {
+                            if (typeof pages[i].thumbnail !== 'undefined') {
+                                img.src = pages[i].thumbnail.original || pages[i].thumbnail.source;
+                            } else {
+                                img.src = "http://placehold.it/350x150?text=" + img.dataset['word'];
+                            }
+                        }
+                    }.bind(img)
+                },
+                loadImg = function (img, slug) {
+                    var
+                        script = document.createElement('script'),
+                        callback = 'imgLoaded' + slug;
+
+                    window[callback] = imgLoaded(img);
+                    script.src = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=" + callback + "&piprop=original&titles=" + slug;
+                    document.body.appendChild(script);
+                },
+                slugs = [],
+                names = [],
+                takeRandom = function (number_of_words, slugs, names) {
+                    var
+                        i,
+                        indexes = [];
+                    for (i = 0; i < words_en.length; i++) {
+                        indexes.push(i);
+                    }
+                    shuffle(indexes);
+                    indexes = indexes.slice(0, number_of_words);
+                    for (i = 0; i < indexes.length; i++) {
+                        slugs.push(words_en[indexes[i]]);
+                        names.push(words_ru[indexes[i]]);
+                    }
+                },
+                showImages = function (slugs, names) {
+                    var i, slug, img
+                    for (var i = 0; i < slugs.length; i++) {
+                        slug = slugs[i];
+                        img = document.createElement('img');
+                        img.onclick = imgClick;
+                        img.dataset['word'] = names[i];
+                        document.body.appendChild(img);
+                        loadImg(img, slug);
+                    }
+
+                },
+                showNames = function (names) {
+                    var i, name, link;
+                    for (i = 0; i < names.length; i++) {
+                        name = names[i];
+                        link = document.createElement('a');
+                        link.href = '#';
+                        link.text = name;
+                        link.onclick = imgClick;
+                        link.dataset['word'] = name;
+                        document.body.appendChild(link);
+                    }
+                };
+            takeRandom(number_of_words, slugs, names);
+            showImages(slugs, names);
+            shuffle(names);
+            showNames(names);
+        }
+        generate(5);
+    </script>
+</body>
+</html>
