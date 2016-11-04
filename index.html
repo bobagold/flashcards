@@ -7,13 +7,16 @@
     <style>
         a { display: block; }
         .selected { border: 2px solid green; }
-        img { max-width: 200px; }
+        img { max-width: 200px; margin-left: 1px; }
     </style>
 </head>
 <body>
-    <a href="#" onclick="return generate(5)">Ещё</a><br/>
     <script>
         var
+            use_english_categories = false,
+            use_thumbnails = true,
+            categories = ['Category:Mammals of Asia', 'Category:Member states of the European Union'],
+            language = (window.navigator.userLanguage || window.navigator.language).substr(0, 2),
             uniqid = function () {
                 return 'cb' + String(Math.random()).substring(2, 10);
             },
@@ -48,7 +51,24 @@
                 window[cbName] = cb;
                 script.src = src.replace('CBNAME', cbName);
                 document.body.appendChild(script);
-            });
+            }),
+            translate = function (slugs, cur_lang, callback) {
+                var
+                    translate_url = "https://en.wikipedia.org/w/api.php?action=query&prop=langlinks&lllang=" + cur_lang + "&format=json&callback=CBNAME&titles=",
+                    names = [];
+                exec(translate_url + slugs.join('|'), function (data) {
+                    var
+                        page,
+                        idx,
+                        i;
+                    for (i in data.query.pages) {
+                        page = data.query.pages[i];
+                        idx = slugs.indexOf(page.title);
+                        names[idx] = typeof page.langlinks != 'undefined' ? page.langlinks[0]['*'] : page.title;
+                    }
+                    callback(names);
+                });
+            };
 
         function shuffle(a) {
             var j, x, i;
@@ -59,7 +79,7 @@
                 a[j] = x;
             }
         }
-        function generate(number_of_words) {
+        function generate(number_of_words, cur_lang, category) {
             var
                 selected,
                 imgClick = function () {
@@ -84,22 +104,24 @@
                             if (typeof pages[i].thumbnail !== 'undefined') {
                                 img.src = pages[i].thumbnail.original || pages[i].thumbnail.source;
                             } else {
-                                img.src = "http://placehold.it/350x150?text=" + img.dataset['word'];
+                                img.src = "http://placehold.it/" + (use_thumbnails ? '50x30' : '350x150') + "?text=" + img.dataset['word'];
                             }
                         }
                     }.bind(img)
                 },
                 loadImg = function (img, slug) {
-                    exec("https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=original&titles=" + slug, imgLoaded(img));
+                    var
+                        piprop = use_thumbnails ? 'thumbnail' : 'original',
+                        cat_lang = use_english_categories ? 'en' : cur_lang;
+                    exec("https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=" + piprop + "&titles=" + slug, imgLoaded(img));
                 },
                 takeRandom = function (number_of_words, callback) {
                     var
                         i,
                         slugs = [],
-                        names = [],
                         words_en = [],
-                        category_url = "https://en.wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmlimit=30&cmtitle=Category:Mammals_of_Asia",
-                        translate_url = "https://en.wikipedia.org/w/api.php?action=query&prop=langlinks&lllang=ru&format=json&callback=CBNAME&titles=",
+                        cat_lang = use_english_categories ? 'en' : cur_lang,
+                        category_url = "https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmlimit=30&cmtitle=" + category,
                         indexes = [];
                     exec(category_url, function (data) {
                         var
@@ -116,18 +138,13 @@
                         for (i = 0; i < indexes.length; i++) {
                             slugs.push(words_en[indexes[i]]);
                         }
-                        exec(translate_url + slugs.join('|'), function (data) {
-                            var
-                                page,
-                                idx,
-                                i;
-                            for (i in data.query.pages) {
-                                page = data.query.pages[i];
-                                idx = slugs.indexOf(page.title);
-                                names[idx] = typeof page.langlinks != 'undefined' ? page.langlinks[0]['*'] : page.title;
-                            }
-                            callback(slugs, names);
-                        });
+                        if (use_english_categories) {
+                            translate(slugs, cur_lang, function (names) {
+                                callback(slugs, names);
+                            });
+                        } else {
+                            callback(slugs, slugs);
+                        }
                     });
                 },
                 showImages = function (slugs, names) {
@@ -161,7 +178,20 @@
             });
             return false;
         }
-        generate(5);
+        translate(categories, language, function (names) {
+            var i, link;
+            for (i = 0; i < names.length; i++) {
+                link = document.createElement('a');
+                link.href = '#';
+                link.text = names[i];
+                link.onclick = function () {
+                    var i = this;
+                    generate(5, language, use_english_categories ? categories[i] : names[i]);
+                    return false;
+                }.bind(i);
+                document.body.appendChild(link);
+            }
+        });
     </script>
 </body>
 </html>
