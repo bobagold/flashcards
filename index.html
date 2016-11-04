@@ -8,15 +8,53 @@
         a { display: block; }
         .selected { border: 2px solid green; }
         img { max-width: 200px; margin-left: 1px; }
+        .curLang { text-decoration: unset; color: black; }
     </style>
 </head>
 <body>
     <script>
         var
             use_english_categories = false,
-            use_thumbnails = true,
-            categories = ['Category:Mammals of Asia', 'Category:Member states of the European Union'],
+            use_thumbnails = window.screen.width < 400,
+            categories = ['Category:Mammals of Asia', 'Category:Member states of the European Union', 'Category:Plant families', 'Category:Post-Impressionism'],
             language = (window.navigator.userLanguage || window.navigator.language).substr(0, 2),
+            createLink = function (name, callback) {
+                var link = document.createElement('a');
+                link.href = '#';
+                link.text = name;
+                link.onclick = callback;
+                document.body.appendChild(link);
+                return link;
+            },
+            showLanguages = function (language) {
+                var l, i, link,
+                    languages = ['en', 'de', 'ru'];
+                for (i in languages) {
+                    l = languages[i];
+                    link = createLink(l, function () {
+                        var i;
+                        language = this;
+                        while (document.body.children.length > 0) {
+                            document.body.removeChild(document.body.children[0]);
+                        }
+                        showLanguages(language);
+                        translate(categories, language, showCategories);
+                    }.bind(l));
+                    if (l === language) {
+                        link.className = 'curLang';
+                    }
+                }
+            },
+            showCategories = function (names) {
+                var i;
+                for (i = 0; i < names.length; i++) {
+                    createLink(names[i], function () {
+                        var i = this;
+                        generate(5, language, use_english_categories ? categories[i] : names[i]);
+                        return false;
+                    }.bind(i));
+                }
+            },
             uniqid = function () {
                 return 'cb' + String(Math.random()).substring(2, 10);
             },
@@ -163,12 +201,8 @@
                     var i, name, link;
                     for (i = 0; i < names.length; i++) {
                         name = names[i];
-                        link = document.createElement('a');
-                        link.href = '#';
-                        link.text = name;
-                        link.onclick = imgClick;
+                        link = createLink(name, imgClick);
                         link.dataset['word'] = name;
-                        document.body.appendChild(link);
                     }
                 };
             takeRandom(number_of_words, function (slugs, names) {
@@ -178,20 +212,8 @@
             });
             return false;
         }
-        translate(categories, language, function (names) {
-            var i, link;
-            for (i = 0; i < names.length; i++) {
-                link = document.createElement('a');
-                link.href = '#';
-                link.text = names[i];
-                link.onclick = function () {
-                    var i = this;
-                    generate(5, language, use_english_categories ? categories[i] : names[i]);
-                    return false;
-                }.bind(i);
-                document.body.appendChild(link);
-            }
-        });
+        showLanguages(language);
+        translate(categories, language, showCategories);
     </script>
 </body>
 </html>
