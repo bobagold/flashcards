@@ -13,9 +13,6 @@
 <body>
     <a href="#" onclick="return generate(5)">Ещё</a><br/>
     <script>
-        var
-            words_en = "Albatross, Alligator, Angelfish, Ant, Anteater, Antelope, Armadillo, Avocet, Axolotl, Baboon, Badger, Barracuda, Bat, Beagle, Bear, Beaver, Beetle, Bird, Birman, Bison, Bloodhound, Bobcat, Bongo, Bonobo, Budgerigar, Buffalo, Bulldog, Bullfrog, Butterfly, Caiman, Camel, Capybara, Caracal, Cassowary, Cat, Caterpillar, Catfish, Centipede, Chameleon, Cheetah, Chicken, Chihuahua, Chimpanzee, Chinchilla, Chipmunk, Coati, Cockroach, Collie, Cougar, Cow, Coyote, Crab, Crane, Crocodile, Cuscus, Cuttlefish, Dachshund, Dalmatian, Deer, Dingo, Dodo, Dog, Dolphin, Donkey, Dormouse, Dragonfly, Duck, Eagle, Earwig, Echidna, Elephant, Emu, Falcon, Ferret, Fish, Flamingo, Flounder, Fox, Frog, Gar, Gecko, Gerbil, Gibbon, Giraffe, Goat, Goose, Gopher, Gorilla, Grasshopper, Greyhound, Grouse, Guppy, Hamster, Hare, Hedgehog, Heron, Hippopotamus, Horse, Human, Hummingbird, Hyena, Ibis, Iguana, Impala, Indri, Insect, Jackal, Jaguar, Jellyfish, Kakapo, Kangaroo, Kingfisher, Kiwi, Koala, Kudu, Labradoodle, Lemming, Lemur, Leopard, Liger, Lion, Lizard, Llama, Lobster, Lynx, Macaw, Magpie, Manatee, Mandrill, Mastiff, Mayfly, Meerkat, Millipede, Mole, Mongoose, Monkey, Moorhen, Moose, Moth, Mouse, Mule, Newfoundland, Newt, Nightingale, Numbat, Ocelot, Octopus, Okapi, Olm, Opossum, Orangutan, Ostrich, Otter, Oyster, Panther, Parrot, Pekingese, Pelican, Penguin, Pheasant, Pig, Pika, Piranha, Platypus, Poodle, Porcupine, Possum, Prawn, Puffin, Pug, Puma, Quail, Quetzal, Quokka, Rabbit, Raccoon, Rat, Rattlesnake, Reindeer, Rhinoceros, Rottweiler, Salamander, Scorpion, Seahorse, Seal, Serval, Sheep, Shrimp, Skunk, Sloth, Snail, Snake, Sparrow, Sponge, Squid, Squirrel, Starfish, Stingray, Stoat, Swan, Tang, Tapir, Termite, Tiger, Tortoise, Toucan, Turkey, Vulture, Wallaby, Walrus, Wasp, Weasel, Wildebeest, Wolverine, Wombat, Woodlouse, Woodpecker, Yak, Zebra".split(', '),
-            words_ru = "Альбатрос, Аллигатор, Рыба-Ангел, Муравей, Муравьед, Антилопа, Броненосец, Шилоклювка, Аксолотля, Павиан, Барсук, Барракуда, Летучая Мышь, Бигль, Медведь, Бобр, Жук, Птица, Бирман, Зубр, Собака, Кошка, Бонго, Бонобо, Волнистый Попугайчик, Буффало, Бульдог, Лягушка-Бык, Бабочка, Кайман, Верблюд, Кабан, Каракал, Казуар, Кошка, Гусеница, Сом, Сороконожка, Хамелеон, Гепард, Курица, Чихуахуа, Шимпанзе, Шиншилла, Бурундук, Носухи, Тараканы, Колли, Пумы, Коровы, Койоты, Крабы, Журавль, Крокодил, Кускус, Каракатицы, Такса, Далматин, Олени, Собаки Динго, Додо, Собака, Дельфин, Осел, Мышка, Стрекоза, Утка, Орел, Уховертки, Ехидна, Слон, Эму, Сокол, Хорек, Рыбки, Фламинго, Камбала, Лиса, Лягушка, Гар, Геккон, Песчанка, Гиббон, Жираф, Коза, Гусь, Суслик, Горилла, Кузнечик, Грейхаунд, Глухарь, Гуппи, Хомяк, Заяц-Русак, Еж, Цапля, Бегемот, Лошадь, Человека, Колибри, Гиена, Ибис, Игуана, Импала, Индри, Насекомые, Шакал, Ягуар, Медузы, Какапо, Кенгуру, Зимородок, КИВИ, Коала, Антилопа Куду, Лабрадудель, Лемминг, Лемур, Леопард, Лигр, Лев, Ящерицы, Ламы, Омары, Рысь, попугай, сорока, Ламантин, Мандрил, мастиф, Поденок, Сурикат, Многоножки, моль, Мангуст, обезьяна, Камышница, Лось, моль, мышь, Бык, Ньюфаундленд, Ньют, Соловей, сумчатый муравьед, Оцелот, Спрут, Окапи, Олм, Опоссум, Орангутан, страус, выдра, устрицы, Пантера, попугай, пекинес, Пеликан, Пингвин, фазан, поросенок, Пищуха, Пиранья, Утконос, пудель, Дикобраз, Опоссум, Креветки, Тупик, Мопс, Пума, Перепела, Кетцаль, Квокка, Кролик, Енот, Крыса, Змея, Олень, Носорог, Ротвейлер, Саламандра, Скорпион, Морской Конек, Тюлень, Сервал, Овца, Креветки, Скунс, Медведь, Улитка, Змея, Воробей, Губка, Кальмар, Белка, Морская Звезда, Скат, Горностай, Лебедь, Тан, Тапир, Термит, Тигр, Черепаха, Тукан, Индейка, Гриф, Кенгуру, Морж, Оса, Ласка, Антилопа, Росомаха, Вомбат, Мокрица, Дятел, Як, Зебра".split(', ');
         function shuffle(a) {
             var j, x, i;
             for (i = a.length; i; i--) {
@@ -55,30 +52,59 @@
                         }
                     }.bind(img)
                 },
-                loadImg = function (img, slug) {
+                uniqid = function () {
+                    return 'cb' + String(Math.random()).substring(2, 10);
+                },
+                exec = function (src, cb) {
                     var
-                        script = document.createElement('script'),
-                        callback = 'imgLoaded' + slug;
+                        cbName = uniqid(),
+                        script = document.createElement('script');
 
-                    window[callback] = imgLoaded(img);
-                    script.src = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=" + callback + "&piprop=original&titles=" + slug;
+                    window[cbName] = cb;
+                    script.src = src.replace('CBNAME', cbName);
                     document.body.appendChild(script);
                 },
-                slugs = [],
-                names = [],
-                takeRandom = function (number_of_words, slugs, names) {
+                loadImg = function (img, slug) {
+                    exec("https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=original&titles=" + slug, imgLoaded(img));
+                },
+                takeRandom = function (number_of_words, callback) {
                     var
                         i,
+                        slugs = [],
+                        names = [],
+                        words_en = [],
+                        words_ru = [],
+                        category_url = "https://en.wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmlimit=30&cmtitle=Category:Mammals_of_Asia",
+                        translate_url = "https://en.wikipedia.org/w/api.php?action=query&prop=langlinks&lllang=ru&format=json&callback=CBNAME&titles=",
                         indexes = [];
-                    for (i = 0; i < words_en.length; i++) {
-                        indexes.push(i);
-                    }
-                    shuffle(indexes);
-                    indexes = indexes.slice(0, number_of_words);
-                    for (i = 0; i < indexes.length; i++) {
-                        slugs.push(words_en[indexes[i]]);
-                        names.push(words_ru[indexes[i]]);
-                    }
+                    exec(category_url, function (data) {
+                        var
+                            i,
+                            ar = data.query.categorymembers;
+                        for (i = 0; i < ar.length; i++) {
+                            words_en.push(ar[i].title);
+                        }
+                        for (i = 0; i < words_en.length; i++) {
+                            indexes.push(i);
+                        }
+                        shuffle(indexes);
+                        indexes = indexes.slice(0, number_of_words);
+                        for (i = 0; i < indexes.length; i++) {
+                            slugs.push(words_en[indexes[i]]);
+                        }
+                        exec(translate_url + slugs.join('|'), function (data) {
+                            var
+                                page,
+                                idx,
+                                i;
+                            for (i in data.query.pages) {
+                                page = data.query.pages[i];
+                                idx = slugs.indexOf(page.title);
+                                names[idx] = typeof page.langlinks != 'undefined' ? page.langlinks[0]['*'] : page.title;
+                            }
+                            callback(slugs, names);
+                        });
+                    });
                 },
                 showImages = function (slugs, names) {
                     var i, slug, img
@@ -104,10 +130,11 @@
                         document.body.appendChild(link);
                     }
                 };
-            takeRandom(number_of_words, slugs, names);
-            showImages(slugs, names);
-            shuffle(names);
-            showNames(names);
+            takeRandom(number_of_words, function (slugs, names) {
+                showImages(slugs, names);
+                shuffle(names);
+                showNames(names);
+            });
             return false;
         }
         generate(5);
