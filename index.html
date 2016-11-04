@@ -13,6 +13,43 @@
 <body>
     <a href="#" onclick="return generate(5)">Ещё</a><br/>
     <script>
+        var
+            uniqid = function () {
+                return 'cb' + String(Math.random()).substring(2, 10);
+            },
+            cached = function (f) {
+                var cache = {};
+                return function () {
+                    var i, arg, key = '', cb;
+                    for (i = 0; i < arguments.length; i++) {
+                        arg = arguments[i];
+                        if (typeof arg === 'function') {
+                            cb = arg;
+                            arguments[i] = function () {
+                                cache[key] = arguments;
+                                cb.apply(this, arguments);
+                            };
+                        } else {
+                            key += '/' + arg;
+                        }
+                    }
+                    if (!cache.hasOwnProperty(key)) {
+                        f.apply(this, arguments);
+                    } else {
+                        cb.apply(this, cache[key]);
+                    }
+                };
+            },
+            exec = cached(function (src, cb) {
+                var
+                    cbName = uniqid(),
+                    script = document.createElement('script');
+
+                window[cbName] = cb;
+                script.src = src.replace('CBNAME', cbName);
+                document.body.appendChild(script);
+            });
+
         function shuffle(a) {
             var j, x, i;
             for (i = a.length; i; i--) {
@@ -52,18 +89,6 @@
                         }
                     }.bind(img)
                 },
-                uniqid = function () {
-                    return 'cb' + String(Math.random()).substring(2, 10);
-                },
-                exec = function (src, cb) {
-                    var
-                        cbName = uniqid(),
-                        script = document.createElement('script');
-
-                    window[cbName] = cb;
-                    script.src = src.replace('CBNAME', cbName);
-                    document.body.appendChild(script);
-                },
                 loadImg = function (img, slug) {
                     exec("https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=original&titles=" + slug, imgLoaded(img));
                 },
@@ -73,7 +98,6 @@
                         slugs = [],
                         names = [],
                         words_en = [],
-                        words_ru = [],
                         category_url = "https://en.wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmlimit=30&cmtitle=Category:Mammals_of_Asia",
                         translate_url = "https://en.wikipedia.org/w/api.php?action=query&prop=langlinks&lllang=ru&format=json&callback=CBNAME&titles=",
                         indexes = [];
