@@ -16,7 +16,13 @@
         var
             use_english_categories = false,
             use_thumbnails = window.screen.width < 400,
-            categories = ['Category:Mammals of Asia', 'Category:Member states of the European Union', 'Category:Plant families', 'Category:Post-Impressionism'],
+            categories = [
+                'Category:Mammals of Asia',
+                'Category:Mammal families',
+                'Category:Member states of the European Union',
+                'Category:Plant families',
+                'Category:Post-Impressionism'
+            ],
             language = (window.navigator.userLanguage || window.navigator.language).substr(0, 2),
             createLink = function (name, callback) {
                 var link = document.createElement('a');
@@ -26,26 +32,29 @@
                 document.body.appendChild(link);
                 return link;
             },
-            showLanguages = function (language) {
+            showLanguages = function (cur_lang) {
                 var l, i, link,
                     languages = ['en', 'de', 'ru'];
                 for (i in languages) {
                     l = languages[i];
                     link = createLink(l, function () {
-                        var i;
-                        language = this;
+                        var i,
+                            language = this;
                         while (document.body.children.length > 0) {
                             document.body.removeChild(document.body.children[0]);
                         }
                         showLanguages(language);
-                        translate(categories, language, showCategories);
+                        translate(categories, language, function (names) {
+                            showCategories(names, language);
+                        });
+                        return false;
                     }.bind(l));
-                    if (l === language) {
+                    if (l === cur_lang) {
                         link.className = 'curLang';
                     }
                 }
             },
-            showCategories = function (names) {
+            showCategories = function (names, language) {
                 var i;
                 for (i = 0; i < names.length; i++) {
                     createLink(names[i], function () {
@@ -120,6 +129,7 @@
         function generate(number_of_words, cur_lang, category) {
             var
                 selected,
+                use_e_c = use_english_categories || category.indexOf('Category:') === 0,
                 imgClick = function () {
                     if (!selected) {
                         selected = this;
@@ -150,7 +160,7 @@
                 loadImg = function (img, slug) {
                     var
                         piprop = use_thumbnails ? 'thumbnail' : 'original',
-                        cat_lang = use_english_categories ? 'en' : cur_lang;
+                        cat_lang = use_e_c ? 'en' : cur_lang;
                     exec("https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=" + piprop + "&titles=" + slug, imgLoaded(img));
                 },
                 takeRandom = function (number_of_words, callback) {
@@ -158,8 +168,8 @@
                         i,
                         slugs = [],
                         words_en = [],
-                        cat_lang = use_english_categories ? 'en' : cur_lang,
-                        category_url = "https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmlimit=30&cmtitle=" + category,
+                        cat_lang = use_e_c ? 'en' : cur_lang,
+                        category_url = "https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmsort=timestamp&cmlimit=30&cmtitle=" + category,
                         indexes = [];
                     exec(category_url, function (data) {
                         var
@@ -176,7 +186,7 @@
                         for (i = 0; i < indexes.length; i++) {
                             slugs.push(words_en[indexes[i]]);
                         }
-                        if (use_english_categories) {
+                        if (use_e_c) {
                             translate(slugs, cur_lang, function (names) {
                                 callback(slugs, names);
                             });
@@ -213,7 +223,9 @@
             return false;
         }
         showLanguages(language);
-        translate(categories, language, showCategories);
+        translate(categories, language, function (names) {
+            showCategories(names, language);
+        });
     </script>
 </body>
 </html>
