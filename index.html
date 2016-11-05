@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash cards</title>
     <style>
-        a { display: block; }
+        #container a { display: block; }
         .selected { border: 2px solid green; }
-        img { max-width: 200px; margin-left: 1px; }
+        #container img { max-width: 200px; margin-left: 1px; }
         .curLang { text-decoration: unset; color: black; }
+        #score { float: right; }
     </style>
 </head>
 <body>
+    <div id="score"><span id="points">0</span> <span id="points_text">0</span></div>
+    <div id="header"></div>
+    <div id="container"></div>
     <script>
         var
             use_english_categories = false,
@@ -21,27 +25,41 @@
                 'Category:Mammal families',
                 'Category:Member states of the European Union',
                 'Category:Plant families',
+                'Category:Lichens',
                 'Category:Post-Impressionism'
             ],
             language = (window.navigator.userLanguage || window.navigator.language).substr(0, 2),
+            container = document.getElementById('container'),
             createLink = function (name, callback) {
                 var link = document.createElement('a');
                 link.href = '#';
                 link.text = name;
                 link.onclick = callback;
-                document.body.appendChild(link);
+                container.appendChild(link);
                 return link;
             },
             showLanguages = function (cur_lang) {
                 var l, i, link,
+                    headers = {
+                        en: 'Flashcards: associate the name and picture and they will disappear!',
+                        de: 'Flashcards: verbinden Sie dem Namen und Bild, damit sie verschwinden!',
+                        ru: 'Flashcards: Сопоставь название и картинку, и они исчезнут!'
+                    },
+                    points_texts = {
+                        en: 'Points',
+                        de: 'Punkte',
+                        ru: 'Очков'
+                    },
                     languages = ['en', 'de', 'ru'];
+                document.getElementById('header').innerText = headers[cur_lang];
+                document.getElementById('points_text').innerText = points_texts[cur_lang];
                 for (i in languages) {
                     l = languages[i];
                     link = createLink(l, function () {
                         var i,
                             language = this;
-                        while (document.body.children.length > 0) {
-                            document.body.removeChild(document.body.children[0]);
+                        while (container.children.length > 0) {
+                            container.removeChild(container.children[0]);
                         }
                         showLanguages(language);
                         translate(categories, language, function (names) {
@@ -97,7 +115,7 @@
 
                 window[cbName] = cb;
                 script.src = src.replace('CBNAME', cbName);
-                document.body.appendChild(script);
+                container.appendChild(script);
             }),
             translate = function (slugs, cur_lang, callback) {
                 var
@@ -135,9 +153,10 @@
                         selected = this;
                         this.className = 'selected';
                     } else if (selected != this && selected.dataset['word'] == this.dataset['word']) {
-                        document.body.removeChild(selected);
-                        document.body.removeChild(this);
+                        container.removeChild(selected);
+                        container.removeChild(this);
                         selected = null;
+                        container_points.innerText = 1 + Number(container_points.innerText);
                     } else {
                         selected.className = '';
                         selected = null;
@@ -202,7 +221,7 @@
                         img = document.createElement('img');
                         img.onclick = imgClick;
                         img.dataset['word'] = names[i];
-                        document.body.appendChild(img);
+                        container.appendChild(img);
                         loadImg(img, slug);
                     }
 
