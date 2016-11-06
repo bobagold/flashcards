@@ -147,6 +147,7 @@
         function generate(number_of_words, cur_lang, category) {
             var
                 selected,
+                container_points = document.getElementById('points'),
                 use_e_c = use_english_categories || category.indexOf('Category:') === 0,
                 imgClick = function () {
                     if (!selected) {
