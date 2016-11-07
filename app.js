@@ -2,7 +2,6 @@ window.addEventListener("load", function() {
     (function () {
         var
             use_english_categories = false,
-            use_thumbnails = window.screen.width < 400,
             categories = [
                 'Category:Mammals of Asia',
                 'Category:Mammal families',
@@ -163,16 +162,15 @@ window.addEventListener("load", function() {
                             if (typeof pages[i].thumbnail !== 'undefined') {
                                 img.src = pages[i].thumbnail.original || pages[i].thumbnail.source;
                             } else {
-                                img.src = "http://placehold.it/" + (use_thumbnails ? '50x30' : '350x150') + "?text=" + img.dataset['word'];
+                                img.src = "http://placehold.it/350x150?text=" + img.dataset['word'];
                             }
                         }
                     }.bind(img)
                 },
                 loadImg = function (img, slug) {
                     var
-                        piprop = use_thumbnails ? 'thumbnail' : 'original',
                         cat_lang = use_e_c ? 'en' : cur_lang;
-                    exec("https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=" + piprop + "&titles=" + slug, imgLoaded(img));
+                    exec("https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=thumbnail&pithumbsize=275&titles=" + slug, imgLoaded(img));
                 },
                 loadPagesFromCategory = function (cat_lang, category, callback) {
                     var
