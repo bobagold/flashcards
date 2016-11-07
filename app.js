@@ -11,11 +11,14 @@ window.addEventListener("load", function() {
                 'Category:Lichens',
                 'Category:Post-Impressionism'
             ],
+            isEnglishCategory = function (name) {
+                return use_english_categories || name.indexOf('Category:') === 0
+            },
             language = (window.navigator.userLanguage || window.navigator.language).substr(0, 2),
             container = document.getElementById('container'),
-            createLink = function (name, container, callback) {
+            createLink = function (name, container, callback, href) {
                 var link = document.createElement('a');
-                link.href = '#';
+                link.href = href || '#';
                 link.text = name;
                 link.onclick = callback;
                 container.appendChild(link);
@@ -67,7 +70,7 @@ window.addEventListener("load", function() {
                         var i = this;
                         generate(5, language, use_english_categories ? categories[i] : names[i]);
                         return false;
-                    }.bind(i));
+                    }.bind(i), 'http://' + (isEnglishCategory(names[i]) ? 'en' : language) + '.wikipedia.org/wiki/' + names[i]);
                 }
             },
             uniqid = function () {
@@ -136,7 +139,7 @@ window.addEventListener("load", function() {
             var
                 selected,
                 container_points = document.getElementById('points'),
-                use_e_c = use_english_categories || category.indexOf('Category:') === 0,
+                use_e_c = isEnglishCategory(category),
                 imgClick = function () {
                     if (!selected) {
                         selected = this;
@@ -219,7 +222,7 @@ window.addEventListener("load", function() {
                     var i, name, link;
                     for (i = 0; i < names.length; i++) {
                         name = names[i];
-                        link = createLink(name, container, imgClick);
+                        link = createLink(name, container, imgClick, 'http://' + cur_lang + '.wikipedia.org/wiki/' + name);
                         link.dataset['word'] = name;
                     }
                 };
