@@ -174,14 +174,10 @@ window.addEventListener("load", function() {
                         cat_lang = use_e_c ? 'en' : cur_lang;
                     exec("https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&callback=CBNAME&piprop=" + piprop + "&titles=" + slug, imgLoaded(img));
                 },
-                takeRandom = function (number_of_words, callback) {
+                loadPagesFromCategory = function (cat_lang, category, callback) {
                     var
-                        i,
-                        slugs = [],
-                        words_en = [],
-                        cat_lang = use_e_c ? 'en' : cur_lang,
-                        category_url = "https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmsort=timestamp&cmlimit=30&cmtitle=" + category,
-                        indexes = [];
+                       words_en = [],
+                       category_url = "https://" + cat_lang + ".wikipedia.org/w/api.php?action=query&format=json&callback=CBNAME&list=categorymembers&cmtype=page&cmsort=timestamp&cmlimit=30&cmtitle=" + category;
                     exec(category_url, function (data) {
                         var
                             i,
@@ -189,6 +185,18 @@ window.addEventListener("load", function() {
                         for (i = 0; i < ar.length; i++) {
                             words_en.push(ar[i].title);
                         }
+                        callback(words_en);
+                    });
+                },
+                takeRandom = function (number_of_words, callback) {
+                    var
+                        i,
+                        slugs = [],
+                        cat_lang = use_e_c ? 'en' : cur_lang,
+                        indexes = [];
+                    loadPagesFromCategory(cat_lang, category, function (words_en) {
+                        var
+                            i;
                         for (i = 0; i < words_en.length; i++) {
                             indexes.push(i);
                         }
